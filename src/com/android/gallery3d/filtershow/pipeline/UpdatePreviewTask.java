@@ -21,6 +21,8 @@ import android.graphics.Bitmap;
 import com.android.gallery3d.filtershow.filters.FiltersManager;
 import com.android.gallery3d.filtershow.imageshow.MasterImage;
 
+import android.util.Log;
+
 public class UpdatePreviewTask extends ProcessingTask {
     private static final String LOGTAG = "UpdatePreviewTask";
     private CachingPipeline mPreviewPipeline = null;
@@ -59,7 +61,13 @@ public class UpdatePreviewTask extends ProcessingTask {
         ImagePreset renderingPreset = preset.dequeuePreset();
         if ( (buffer != null) && (renderingPreset != null)) {
             mPreviewPipeline.compute(buffer, renderingPreset, 0);
-            if ( buffer.getProducer() == null) {
+            /*if destroyRenderScriptContext() from CachingPipleline.java is called (when the user
+              presses the back button) then sharedBuffer's getProducer will return null, because
+              compute() method above will return before setting producer.
+            */
+            if(buffer.getProducer()==null)
+            {
+                Log.w(LOGTAG,"Null pointer exception, buffer.getProducer() returns null in doInBackground()");
                 return null;
             }
             // set the preset we used in the buffer for later inspection UI-side

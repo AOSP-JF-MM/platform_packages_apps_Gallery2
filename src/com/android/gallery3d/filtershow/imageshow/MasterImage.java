@@ -48,6 +48,8 @@ import com.android.gallery3d.filtershow.state.StateAdapter;
 import java.util.List;
 import java.util.Vector;
 
+import android.util.Log;
+
 public class MasterImage implements RenderingRequestCaller {
 
     private static final String LOGTAG = "MasterImage";
@@ -553,9 +555,14 @@ public class MasterImage implements RenderingRequestCaller {
         mActivity.getProcessingService().updatePreviewBuffer();
     }
 
-    public void setImageShowSize(int w, int h) {
+    public void setImageShowSize(int w, int h) throws Exception {
         if (mImageShowSize.x != w || mImageShowSize.y != h) {
             mImageShowSize.set(w, h);
+            if(mOriginalBounds == null)
+            {
+                Log.w(LOGTAG,"Null pointer exception, mOriginalBounds is null in setImageShowSize()");
+                throw new Exception();
+            }
             float maxWidth = mOriginalBounds.width() / (float) w;
             float maxHeight = mOriginalBounds.height() / (float) h;
             mMaxScaleFactor = Math.max(3.f, Math.max(maxWidth, maxHeight));
@@ -574,6 +581,12 @@ public class MasterImage implements RenderingRequestCaller {
         if (getOriginalBounds() == null
                 || mImageShowSize.x == 0
                 || mImageShowSize.y == 0) {
+            return null;
+        }
+
+        if(mPreset == null)
+        {
+            Log.w(LOGTAG,"Null pointer exception - mPreset is null in computeImageToScreen()");
             return null;
         }
 

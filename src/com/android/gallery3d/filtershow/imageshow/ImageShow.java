@@ -256,10 +256,15 @@ public class ImageShow extends View implements OnGestureListener,
         mPaint.reset();
         mPaint.setAntiAlias(true);
         mPaint.setFilterBitmap(true);
-        MasterImage.getImage().setImageShowSize(
-                getWidth() - 2*mShadowMargin,
-                getHeight() - 2*mShadowMargin);
-
+        try {
+            MasterImage.getImage().setImageShowSize(
+                    getWidth() - 2*mShadowMargin,
+                    getHeight() - 2*mShadowMargin);
+        }
+        catch(Exception e) {
+            Log.w(LOGTAG,"Got an exception in onDraw()");
+            return ;
+        }
         MasterImage img = MasterImage.getImage();
         // Hide the loading indicator as needed
         if (mActivity.isLoadingVisible() && getFilteredImage() != null) {

@@ -50,4 +50,5 @@
     <color name="primary">#7300e5</color>
     <color name="primary_dark">#5c01b7</color>
     <color name="accent">#8000ff</color>
+    <color name="textColor">#ffffff</color>
 </resources>

@@ -52,4 +52,5 @@
     <color name="accent">#8000ff</color>
     <color name="textColor">#ffffff</color>
     <color name="photo_overlay">#66000000</color>
+    <color name="details_background">@color/photo_overlay</color>
 </resources>

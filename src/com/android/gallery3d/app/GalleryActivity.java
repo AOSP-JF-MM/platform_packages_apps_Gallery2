@@ -160,11 +160,13 @@ public final class GalleryActivity extends AbstractGalleryActivity implements On
     private void startViewAction(Intent intent) {
         Boolean slideshow = intent.getBooleanExtra(EXTRA_SLIDESHOW, false);
         if (slideshow) {
+            getActionBar().hide();
             DataManager manager = getDataManager();
             Path path = manager.findPathByUri(intent.getData(), intent.getType());
             if (path == null || manager.getMediaObject(path)
                     instanceof MediaItem) {
-                return;
+                path = Path.fromString(
+                        manager.getTopSetPath(DataManager.INCLUDE_IMAGE));
             }
             Bundle data = new Bundle();
             data.putString(SlideshowPage.KEY_SET_PATH, path.toString());
